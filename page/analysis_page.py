@@ -16,14 +16,14 @@ def analysis_page():
     with col_group:
         group = st.selectbox(
             "Chọn nhóm model", 
-            ["Deep Learning", "Model ML"],
+            ["Tiếng Việt", "Tiếng Anh"],
             help="Chọn nhóm mô hình",
             key="group_choice"
         )
-        if group == "Deep Learning":
-            models = ["cnn_lstm_attention",]
-        else:
-            models = ["logistic", "random_forest", "xgboost", "naive_bayes", "extra_trees", "lightgbm", "voting"]
+        if group == "Tiếng Việt":
+            models = ["XLMRoBerta_CNN_LSTM_Vietnamese"]
+        elif group == "Tiếng Anh":
+            models = ["CNN_LSTM_Attention_English"]
         model_choice = st.selectbox(
             "Chọn model", models,
             key="model_choice"
