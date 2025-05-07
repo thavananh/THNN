@@ -1,10 +1,10 @@
 # Phân Loại Email CNN-BiLSTM-Attention
 
-Ứng dụng **Phân Tích Cảm Xúc Bằng Mô Hình CNN-BiLSTM** là một ứng dụng web được xây dựng bằng Streamlit, sử dụng mô hình học sâu kết hợp giữa Convolutional Neural Network (CNN) và Bidirectional LSTM (BiLSTM) để phân loại email thành hai loại: **Spam** và **Ham**
+Ứng dụng **Phân Tích email Bằng kiến trúc CNN-BiLSTM** là một ứng dụng web được xây dựng bằng Streamlit, sử dụng mô hình học sâu kết hợp giữa Convolutional Neural Network (CNN) và Bidirectional LSTM (BiLSTM) để phân loại email thành hai loại: **Spam** và **Ham**
 
 ## Tính Năng
 
-- **Phân loại cảm xúc**: Nhập văn bản tiếng Việt hoặc tiếng anh anh và phân loại email tương ứng.
+- **Phân loại email**: Nhập văn bản tiếng Việt hoặc tiếng anh anh và phân loại email tương ứng.
 - **Giao diện thân thiện**: Sử dụng Streamlit để tạo giao diện đơn giản và dễ sử dụng.
 - **Ví dụ mẫu**: Hiển thị ví dụ phân loại khi người dùng muốn.
 
