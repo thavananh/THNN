@@ -58,7 +58,7 @@
 
 - **Video Demo**: Xem video hướng dẫn và demo ứng dụng tại:
 
-  [![Demo Video](/readme_resources/Thumnail_For_Video.png)](/readme_resources/demo_app.mp4)
+  [![Demo Video](/readme_resources/Thumnail_For_Video.png)](https://www.youtube.com/watch?v=r0xe8z6kQuc)
 
 - **Link Google Drive chứa mô hình**:
 
