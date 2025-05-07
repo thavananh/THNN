@@ -4,7 +4,7 @@
 
 ## Tính Năng
 
-- **Phân loại cảm xúc**: Nhập văn bản tiếng Việt hoặc tieensgn anh và nhận diện cảm xúc tương ứng.
+- **Phân loại cảm xúc**: Nhập văn bản tiếng Việt hoặc tiếng anh anh và phân loại email tương ứng.
 - **Giao diện thân thiện**: Sử dụng Streamlit để tạo giao diện đơn giản và dễ sử dụng.
 - **Ví dụ mẫu**: Hiển thị ví dụ phân loại khi người dùng muốn.
 
@@ -18,8 +18,8 @@
 1. **Clone kho lưu trữ**:
 
    ```bash
-   git clone https://github.com/thavananh/Demo_CuoiHocPhan_Python.git
-   cd Demo_CuoiHocPhan_Python
+   git clone https://github.com/thavananh/THNN.git
+   cd THNN
    ```
 
 2. **Tạo môi trường ảo (khuyến nghị)**:
@@ -42,7 +42,6 @@
    seaborn
    transformers
    streamlit-plugins
-
    ```
 
    Sau đó, chạy lệnh sau để cài đặt tất cả các thư viện:
