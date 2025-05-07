@@ -1,4 +1,4 @@
-# Phân Loại Email CNN-BiLSTM-Attention
+# Phân Loại Email XLMRoBerta-CNN-BiLSTM
 
 Ứng dụng **Phân Tích email Bằng kiến trúc XLMRoBerta-CNN-BiLSTM** là một ứng dụng web được xây dựng bằng Streamlit, sử dụng mô hình huấn luyện trước XLMRoBerta cùng với các kỹ thuật học sâu kết hợp giữa Convolutional Neural Network (CNN), Bidirectional LSTM (BiLSTM) để phân loại email thành hai loại: **Spam** và **Ham**
 
