@@ -1,0 +1,8 @@
+streamlit
+tensorflow
+pyvi
+numpy
+torch
+seaborn
+transformers
+streamlit-plugins

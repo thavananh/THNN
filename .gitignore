@@ -1,0 +1,16 @@
+# Ignore all model artifacts
+*.pt
+*.joblib
+*.kv
+*.npy
+
+# Optionally, ignore entire folders
+cnn_lstm_attention_component/
+ML_archive/
+
+# If you want to ignore specific files instead of full folders:
+# cnn_lstm_attention_component/email_cnn_lstm_attention_word2vec.pt
+# cnn_lstm_attention_component/*.joblib
+# cnn_lstm_attention_component/*.kv
+# cnn_lstm_attention_component/*.npy
+# ML_archive/*.joblib
