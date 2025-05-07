@@ -1,6 +1,6 @@
 import streamlit as st
-from page import analysis_page
-from page import setting_page
+from page.analysis_page import analysis_page
+from page.setting_page import setting_page
 # from utils import create_database, create_connection, DB_NAME
 
 def main():

@@ -1,8 +1,10 @@
 import os
+from pyexpat import model
 import re
 import unicodedata
 import json
 import joblib
+from matplotlib.dates import FR
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -31,9 +33,13 @@ BEST_DL_MODEL        = "email_cnn_lstm_attention_word2vec.pt"
 ML_ARCHIVE_DIR       = "../ML_archive"
 
 # PhoBERT + CNN-LSTM config
-PHOBERT_MODEL_NAME   = 'FacebookAI/xlm-roberta-base'
-PHOBERT_ARTIFACTS_DIR= "../xlm_roberta_cnn_lstm"
-FREEZE_BERT          = False
+XLM_ROBERTA_CNN_LSTM_MODEL_NAME   = 'FacebookAI/xlm-roberta-base'
+XLM_ROBERTA_CNN_LSTM_ARTIFACTS_DIR= "../xlm_roberta_cnn_lstm"
+FREEZE_BERT          = False    
+
+PHOBERT_CNN_LSTM_MODEL_NAME = 'vinai/phobert-base-v2'
+PHOBERT_CNN_LSTM_ARTIFACTS_DIR = "../phobert_cnn_lstm"
+FREEZE_BERT = False
 
 # Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -182,12 +188,12 @@ def load_ml_artifacts():
     return tfidf, le, models
 
 
-def load_phobert_artifacts():
-    tokenizer = AutoTokenizer.from_pretrained(PHOBERT_MODEL_NAME)
-    label_map = joblib.load(os.path.join(PHOBERT_ARTIFACTS_DIR, 'label_map.joblib'))
+def load_phobert_artifacts(artifacts_dir=XLM_ROBERTA_CNN_LSTM_ARTIFACTS_DIR):
+    tokenizer = AutoTokenizer.from_pretrained(XLM_ROBERTA_CNN_LSTM_MODEL_NAME)
+    label_map = joblib.load(os.path.join(XLM_ROBERTA_CNN_LSTM_ARTIFACTS_DIR, 'label_map.joblib'))
     idx2lab   = {v: k for k, v in label_map.items()}
     model     = BertCNNLSTMClassifier(
-        model_name=PHOBERT_MODEL_NAME,
+        model_name=XLM_ROBERTA_CNN_LSTM_MODEL_NAME,
         num_labels=len(label_map),
         freeze_bert=FREEZE_BERT,
         cnn_filters=128,
@@ -197,7 +203,7 @@ def load_phobert_artifacts():
         bidirectional=True,
         dropout=0.3
     )
-    state = torch.load(os.path.join(PHOBERT_ARTIFACTS_DIR, 'best_model.pt'), map_location=device)
+    state = torch.load(os.path.join(XLM_ROBERTA_CNN_LSTM_ARTIFACTS_DIR, 'best_model.pt'), map_location=device)
     model.load_state_dict(state)
     return tokenizer, model.to(device).eval(), idx2lab
 
@@ -206,12 +212,12 @@ def load_phobert_artifacts():
 
 dl_model, dl_vocab, dl_idx2label   = load_dl_artifacts()
 tfidf_vect, label_enc, ml_models   = load_ml_artifacts()
-tokenizer_pho, pho_model, pho_idx2label = load_phobert_artifacts()
-
+tokenizer_xlm_roberta_cnn_lstm, xlm_roberta_cnn_lstm, xlm_roberta_cnn_lstm_idx2label = load_phobert_artifacts()
+tokenizer_phobert_cnn_lstm, phobert_cnn_lstm, phobert_cnn_lstm_idx2label = load_phobert_artifacts(PHOBERT_CNN_LSTM_ARTIFACTS_DIR)
 
 # --- Prediction fns ---
 
-def predict_deep(text: str) -> str:
+def predict_deep(text: str, model_name: str) -> str:
     tokens = word_tokenize(normalize_text(text))
     ids    = [dl_vocab.get(w, dl_vocab[UNK_TOKEN]) for w in tokens]
     if len(ids) < MAX_LEN:
@@ -237,22 +243,40 @@ def predict_ml(text: str, model_name: str) -> str:
     # return label_enc.inverse_transform([raw])[0]
 
 
-def predict_phobert(text: str) -> str:
-    enc = tokenizer_pho(
-        text,
-        add_special_tokens=True,
-        max_length=MAX_LEN,
-        padding='max_length',
-        truncation=True,
-        return_attention_mask=True,
-        return_tensors='pt'
-    )
-    input_ids     = enc['input_ids'].to(device)
-    attention_mask= enc['attention_mask'].to(device)
-    with torch.no_grad():
-        logits = pho_model(input_ids, attention_mask)
-    idx = logits.argmax(dim=1).item()
-    lbl =  pho_idx2label.get(idx, 'Unknown')
+def predict_phobert(text: str, model_name: str="xlm_roberta_cnn_lstm") -> str:
+    lbl = None
+    if model_name == 'xlm_roberta_cnn_lstm':
+        enc = tokenizer_xlm_roberta_cnn_lstm(
+            text,
+            add_special_tokens=True,
+            max_length=MAX_LEN,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='pt'
+        )
+        input_ids     = enc['input_ids'].to(device)
+        attention_mask= enc['attention_mask'].to(device)
+        with torch.no_grad():
+            logits = xlm_roberta_cnn_lstm(input_ids, attention_mask)
+        idx = logits.argmax(dim=1).item()
+        lbl =  xlm_roberta_cnn_lstm_idx2label.get(idx, 'Unknown')
+    elif model_name == 'phobert_cnn_lstm':
+        enc = tokenizer_phobert_cnn_lstm(
+            text,
+            add_special_tokens=True,
+            max_length=MAX_LEN,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='pt'
+        )
+        input_ids     = enc['input_ids'].to(device)
+        attention_mask= enc['attention_mask'].to(device)
+        with torch.no_grad():
+            logits = phobert_cnn_lstm(input_ids, attention_mask)
+        idx = logits.argmax(dim=1).item()
+        lbl =  phobert_cnn_lstm_idx2label.get(idx, 'Unknown')
     return 'Spam' if lbl in {1,'1'} else 'Ham'
 
 
@@ -264,9 +288,10 @@ app = Flask(__name__)
 def predict_dl():
     data = request.get_json(force=True)
     text = data.get('text', '').strip()
+    model = data.get('model', '').lower()
     if not text:
         return jsonify({'error': 'Missing text'}), 400
-    return jsonify({'prediction': predict_deep(text)})
+    return jsonify({'prediction': predict_deep(text, model)})
 
 
 @app.route('/predict/ml', methods=['POST'])
@@ -283,9 +308,10 @@ def predict_ml_endpoint():
 def predict_phobert_endpoint():
     data = request.get_json(force=True)
     text = data.get('text', '').strip()
+    model = data.get('model', '').lower()
     if not text:
         return jsonify({'error': 'Missing text'}), 400
-    return jsonify({'prediction': predict_phobert(text)})
+    return jsonify({'prediction': predict_phobert(text, model_name=model)})
 
 
 if __name__ == '__main__':
