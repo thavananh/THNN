@@ -1,6 +1,6 @@
 # Phân Loại Email CNN-BiLSTM-Attention
 
-Ứng dụng **Phân Tích email Bằng kiến trúc CNN-BiLSTM** là một ứng dụng web được xây dựng bằng Streamlit, sử dụng mô hình học sâu kết hợp giữa Convolutional Neural Network (CNN) và Bidirectional LSTM (BiLSTM) để phân loại email thành hai loại: **Spam** và **Ham**
+Ứng dụng **Phân Tích email Bằng kiến trúc XLMRoBerta-CNN-BiLSTM** là một ứng dụng web được xây dựng bằng Streamlit, sử dụng mô hình huấn luyện trước XLMRoBerta cùng với các kỹ thuật học sâu kết hợp giữa Convolutional Neural Network (CNN), Bidirectional LSTM (BiLSTM) để phân loại email thành hai loại: **Spam** và **Ham**
 
 ## Tính Năng
 
