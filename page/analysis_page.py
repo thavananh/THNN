@@ -1,6 +1,6 @@
 # analysis_page.py
 import streamlit as st
-from utils import get_prediction
+from utils.utils import get_prediction
 
 
 def clear_input():

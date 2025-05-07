@@ -20,8 +20,8 @@ DROPOUT             = 0.2
 MAX_LEN             = 256
 PAD_TOKEN           = "<pad>"
 UNK_TOKEN           = "<unk>"
-DL_ARTIFACTS_DIR    = "cnn_lstm_attention_component"
-ML_ARCHIVE_DIR      = "ML_archive"
+DL_ARTIFACTS_DIR    = "../cnn_lstm_attention_component"
+ML_ARCHIVE_DIR      = "../ML_archive"
 BEST_MODEL_FILENAME = "email_cnn_lstm_attention_word2vec.pt"
 
 # Device configuration
