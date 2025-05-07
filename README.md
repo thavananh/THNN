@@ -58,7 +58,7 @@
 
 - **Video Demo**: Xem video hướng dẫn và demo ứng dụng tại:
 
-  [![Demo Video](/readme_resources/Thumnail_For_Video.png)](/readme_resources/demo_app.mkv)
+  [![Demo Video](/readme_resources/Thumnail_For_Video.png)](/readme_resources/demo_app.mp4)
 
 - **Link Google Drive chứa mô hình**:
 
@@ -82,9 +82,13 @@
 
 - **Link chứa dataset**: https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset
 
-### Ma trận nhầm lẫn (Confusion Matrix)
+### Ma trận nhầm lẫn mô hình XLM-Roberta-CNN-LSTM_Vietnamese (Confusion Matrix)
 
-![Ma trận nhầm lẫn](path/to/confusion_matrix.png)
+![Ma trận nhầm lẫn](/readme_resources/confusion_matrix_xlmroberta_cnn_lstm_vietnamese.png)
+
+### Ma trận nhầm lẫn mô hình XLM-Roberta-CNN-LSTM_English (Confusion Matrix)
+
+![Ma trận nhầm lẫn](/readme_resources/confusion_matrix_xlmroberta_cnn_lstm_english.png)
 
 ### Bảng đánh giá hiệu năng
 
